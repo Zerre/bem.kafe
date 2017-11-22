@@ -1,8 +1,0 @@
-C:\Users\BEM\Source\Repos\CSharp.Learn\KafeYonetim.Sunum.ConsoleApp\bin\Debug\KafeYonetim.Sunum.ConsoleApp.exe.config
-C:\Users\BEM\Source\Repos\CSharp.Learn\KafeYonetim.Sunum.ConsoleApp\bin\Debug\KafeYonetim.Sunum.ConsoleApp.exe
-C:\Users\BEM\Source\Repos\CSharp.Learn\KafeYonetim.Sunum.ConsoleApp\bin\Debug\KafeYonetim.Sunum.ConsoleApp.pdb
-C:\Users\BEM\Source\Repos\CSharp.Learn\KafeYonetim.Sunum.ConsoleApp\bin\Debug\KafeYonetim.Lib.dll
-C:\Users\BEM\Source\Repos\CSharp.Learn\KafeYonetim.Sunum.ConsoleApp\bin\Debug\KafeYonetim.Lib.pdb
-C:\Users\BEM\Source\Repos\CSharp.Learn\KafeYonetim.Sunum.ConsoleApp\obj\Debug\KafeYonetim.Sunum.ConsoleApp.csprojResolveAssemblyReference.cache
-C:\Users\BEM\Source\Repos\CSharp.Learn\KafeYonetim.Sunum.ConsoleApp\obj\Debug\KafeYonetim.Sunum.ConsoleApp.exe
-C:\Users\BEM\Source\Repos\CSharp.Learn\KafeYonetim.Sunum.ConsoleApp\obj\Debug\KafeYonetim.Sunum.ConsoleApp.pdb

@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafeYonetim.Data", "KafeYon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafeYonetim.Sunum.AnaUygulama", "KafeYonetim.Sunum.AnaUygulama\KafeYonetim.Sunum.AnaUygulama.csproj", "{F25FC74C-7CDE-40AC-B456-8BF8A1099EF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafeYonetim.Sunum.ConsoleApp", "KafeYonetim.Sunum.ConsoleApp\KafeYonetim.Sunum.ConsoleApp.csproj", "{50B9C421-5F22-400C-848C-92344E354105}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{F25FC74C-7CDE-40AC-B456-8BF8A1099EF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F25FC74C-7CDE-40AC-B456-8BF8A1099EF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F25FC74C-7CDE-40AC-B456-8BF8A1099EF4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{50B9C421-5F22-400C-848C-92344E354105}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50B9C421-5F22-400C-848C-92344E354105}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50B9C421-5F22-400C-848C-92344E354105}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50B9C421-5F22-400C-848C-92344E354105}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

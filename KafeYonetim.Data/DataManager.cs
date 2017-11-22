@@ -94,6 +94,18 @@ namespace KafeYonetim.Data
             }
         }
 
+        public static object CalisanSayisiniGetir()
+        {
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand("SELECT COUNT(*) FROM Calisan", connection);
+
+                int result = Convert.ToInt32(command.ExecuteScalar());
+
+                return result;
+            }
+        }
+
         public static List<Calisan> CalisanListesiniGetir()
         {
             using (var connection = CreateConnection())
