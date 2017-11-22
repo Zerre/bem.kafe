@@ -67,12 +67,20 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "11": CalisanListesiniGetir(); break;
                     case "12": CalisanSayisiniGetir(); break;
                     case "13": GarsonListele(); break;
+                    case "14": ToplamGarsonBahsisleri(); break;
                     case "h": return;
                     default:
                         break;
                 }
 
             } while (true);
+        }
+
+        private static void ToplamGarsonBahsisleri()
+        {
+            Console.Clear();
+            Console.WriteLine(DataManager.ToplamBahsisler());
+            Console.ReadLine();
         }
 
         private static void GarsonListele()

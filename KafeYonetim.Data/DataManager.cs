@@ -94,6 +94,23 @@ namespace KafeYonetim.Data
             }
         }
 
+        public static string ToplamBahsisler()
+        {
+            string Garson_Bahsis = "";
+            using (SqlConnection connection = CreateConnection())
+            {
+                SqlCommand command = new SqlCommand("select Count(Id) GarsonSayisi, Sum(Bahsis) ToplamBahsis from Garson",connection);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Garson_Bahsis = $"Garson Sayisi: {reader["GarsonSayisi"].ToString()}, Toplam Bahşiş: {reader["ToplamBahsis"]}";
+                    }
+                }
+            }
+            return Garson_Bahsis;
+        }
+
         public static List<Garson> GarsonlariGetir()
         {
             List<Garson> garsonlar = new List<Garson>();
