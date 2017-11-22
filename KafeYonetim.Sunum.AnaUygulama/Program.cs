@@ -48,6 +48,9 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 Console.WriteLine("10. Bulaşıkçı Ekle");
                 Console.WriteLine("11. Çalışanları Listele");
                 Console.WriteLine("12. Çalışan Sayısını Getir");
+                Console.WriteLine("13. Garson Listele");
+                Console.WriteLine("14. Garson Bahşişleri");
+                Console.WriteLine("15. Çalışanları Sayfala");
                 Console.WriteLine();
                 Console.Write("Bir seçim yapınız (çıkmak için H harfine basınız): ");
                 var secim = Console.ReadLine();
@@ -68,12 +71,90 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "12": CalisanSayisiniGetir(); break;
                     case "13": GarsonListele(); break;
                     case "14": ToplamGarsonBahsisleri(); break;
+                    case "15": CalisanlariSayfaliListesi(); break;
+                    //case "15": CalisanEkle(); break;
                     case "h": return;
                     default:
                         break;
                 }
 
             } while (true);
+        }
+
+        private static void CalisanlariSayfaliListesi()
+        {
+            double toplamSayfa = Math.Ceiling(Convert.ToSingle(DataManager.CalisanSayisiniGetir()) / 20);
+            Console.WriteLine($"Toplam {toplamSayfa} sayfa var");
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Sayfa Sayısını Yazın yada üst menü için C'ye basın..");
+                try
+                {
+                    int sayfa = int.Parse(Console.ReadLine());
+
+                    if (sayfa <= toplamSayfa)
+                    {
+                        foreach (var calisan in DataManager.CalisanlariSayfaliGetir(sayfa))
+                        {
+                            Console.WriteLine($"Adı:{calisan.Isim.PadRight(13)} İşe Giriş Tarihi: {calisan.IseGirisTarihi.ToString("dd.MM.yyyy").PadRight(13)} Görevi: {calisan.Gorev.GorevAdi}");
+                        }
+
+                        Console.WriteLine($"Sayfa: {sayfa}/{toplamSayfa}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Böyle bir sayfa yok, 1 ile {toplamSayfa} arasında bir sayi giriniz..");
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Sayfalar arasında dolaşmak için Enter'a basın ve sayfasayısnı sayı belirtin. Üst menu için C 'ye basın.");
+                    if (Console.ReadLine().ToLower() == "c")
+                    {
+                        return;
+                    }
+                    
+                }
+                Console.ReadLine();
+            }
+        }
+
+        private static void CalisanEkle()
+        {
+            int calisanSayisi = 0;
+            while (true)
+            {
+                for (int a = 0; a < FakeData.NumberData.GetNumber(1, 5); a++)
+                {
+                    AsciEkle();
+                    calisanSayisi++;
+                    if (calisanSayisi == 209)
+                    {
+                        return;
+                    }
+                }
+                for (int g = 0; g < FakeData.NumberData.GetNumber(10, 15); g++)
+                {
+                    GarsonEkle();
+                    calisanSayisi++;
+                    if (calisanSayisi == 209)
+                    {
+                        return;
+                    }
+                }
+                for (int b = 0; b < FakeData.NumberData.GetNumber(7, 13); b++)
+                {
+                    BulasikciEkle();
+                    calisanSayisi++;
+                    if (calisanSayisi == 209)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            Console.ReadLine();
         }
 
         private static void ToplamGarsonBahsisleri()
@@ -116,17 +197,17 @@ namespace KafeYonetim.Sunum.AnaUygulama
         {
             Console.Clear();
 
-            Console.Write("Isim: ");
-            string isim = Console.ReadLine();
+            //Console.Write("Isim: ");
+            string isim = FakeData.NameData.GetFirstName();
 
-            var bulasikci = new Bulasikci(isim, DateTime.Now, DataManager.AktifKafeyiGetir());
+            var bulasikci = new Bulasikci(isim, FakeData.DateTimeData.GetDatetime(), DataManager.AktifKafeyiGetir());
             bulasikci.HijyenPuani = 0;
 
             int id = DataManager.BulasikciEkle(bulasikci);
 
             Console.WriteLine($"{id} id'si ile bulaşıkçı eklendi.");
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
         private static void CalisanListesiniGetir()
@@ -153,31 +234,33 @@ namespace KafeYonetim.Sunum.AnaUygulama
         {
             Console.Clear();
 
-            Console.Write("Isim: ");
-            string isim = Console.ReadLine();
+            //Console.Write("Isim: ");
+            string isim = FakeData.NameData.GetFirstName();
 
-            var asci = new Asci(isim, DateTime.Now, DataManager.AktifKafeyiGetir());
+            var asci = new Asci(isim, FakeData.DateTimeData.GetDatetime(), DataManager.AktifKafeyiGetir());
             asci.Puan = 0;
 
             int id = DataManager.AsciEkle(asci);
 
             Console.WriteLine($"{id} id'si ile aşçı eklendi.");
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
         private static void GarsonEkle()
         {
             Console.Clear();
 
-            Console.Write("Isim: ");
-            string isim = Console.ReadLine();
+            //Console.Write("Isim: ");
+            string isim = FakeData.NameData.GetFirstName();
 
-            var garson = new Garson(isim, DateTime.Now, DataManager.AktifKafeyiGetir());
+            var garson = new Garson(isim, FakeData.DateTimeData.GetDatetime(), DataManager.AktifKafeyiGetir());
 
-            DataManager.GarsonEkle(garson);
+            int id = DataManager.GarsonEkle(garson);
 
-            Console.ReadLine();
+            Console.WriteLine($"{id} id'si ile aşçı eklendi.");
+
+            //Console.ReadLine();
 
         }
 

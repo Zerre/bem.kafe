@@ -8,7 +8,7 @@ namespace KafeYonetim.Data
 
     public class DataManager
     {
-        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=KafeYonetim;Integrated Security=True";
+        private static string connStr = "Data Source=SamininMakinesi;Initial Catalog=KafeYonetim;Integrated Security=True";
 
         private static SqlConnection CreateConnection()
         {
@@ -81,17 +81,41 @@ namespace KafeYonetim.Data
             {
                 var command = new SqlCommand("SELECT COUNT(*) AS MasaSayisi, SUM(KisiSayisi) AS KisiSayisi FROM Masa", connection);
 
-                var reader =  command.ExecuteReader();
+                var reader = command.ExecuteReader();
 
                 reader.Read();
 
                 var tuple = new Tuple<int, int>((int)reader["MasaSayisi"], (int)reader["KisiSayisi"]);
 
-                return tuple; 
+                return tuple;
 
                 //return new Tuple<int, int>((int)reader["MasaSayisi"], (int)reader["KisiSayisi"]);               
                 //return new MasaKisiSayisi { MasaSayisi = (int)reader["MasaSayisi"], KisiSayisi=(int)reader["KisiSayisi"]};
             }
+        }
+
+        public static List<Calisan> CalisanlariSayfaliGetir(int sayfa)
+        {
+            List<Calisan> calisanlar = new List<Calisan>();
+            using (SqlConnection connection = CreateConnection())
+            {                
+                float toplamSayfaSayisi = Convert.ToSingle(CalisanSayisiniGetir())/20;
+                SqlCommand commandCalisanlar = new SqlCommand("SELECT * FROM Calisan C Join Gorev G on C.GorevID = G.Id ORDER BY C.Id ASC OFFSET @baslangic ROWS FETCH FIRST 20 ROWS ONLY", connection);
+                if (sayfa <= Math.Ceiling(toplamSayfaSayisi))
+                {
+                    commandCalisanlar.Parameters.AddWithValue("@baslangic", (sayfa - 1) * 20);
+                    using (SqlDataReader reader = commandCalisanlar.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Calisan calisan = new Calisan(reader["Isim"].ToString(), (DateTime)reader["IseGirisTarihi"], AktifKafeyiGetir());
+                            calisan.Gorev.GorevAdi = reader["GorevAdi"].ToString();
+                            calisanlar.Add(calisan);
+                        }
+                    }
+                }
+            }
+            return calisanlar;
         }
 
         public static string ToplamBahsisler()
@@ -99,7 +123,7 @@ namespace KafeYonetim.Data
             string Garson_Bahsis = "";
             using (SqlConnection connection = CreateConnection())
             {
-                SqlCommand command = new SqlCommand("select Count(Id) GarsonSayisi, Sum(Bahsis) ToplamBahsis from Garson",connection);
+                SqlCommand command = new SqlCommand("select Count(Id) GarsonSayisi, Sum(Bahsis) ToplamBahsis from Garson", connection);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -193,13 +217,22 @@ namespace KafeYonetim.Data
         {
             using (var connection = CreateConnection())
             {
-                var command = new SqlCommand("asciEkle", connection);
+                //var command = new SqlCommand("asciEkle", connection);
+                var command = new SqlCommand($@"
+                            INSERT INTO Asci(Puan) VALUES(@puan);
+                DECLARE @id int;
+                SET @id = scope_identity();
+                INSERT INTO Calisan(Isim, IseGirisTarihi, MesaideMi, KafeId, Durum, GorevId, GorevTabloId) VALUES(@isim, @IseGirisTarihi, @MesaideMi, @kafeId, @Durum, @GorevId, @id); SELECT scope_identity()", connection);
 
-                command.Parameters.AddWithValue("@puan", asci.Puan);
-                command.Parameters.AddWithValue("@kafeId", asci.Kafe.Id);
+                command.Parameters.AddWithValue("@puan", FakeData.NumberData.GetNumber(0, 5));
                 command.Parameters.AddWithValue("@isim", asci.Isim);
+                command.Parameters.AddWithValue("@IseGirisTarihi", asci.IseGirisTarihi);
+                command.Parameters.AddWithValue("@MesaideMi", asci.MesaideMi);
+                command.Parameters.AddWithValue("@KafeId", asci.Kafe.Id);
+                command.Parameters.AddWithValue("@Durum", asci.Durum);
+                command.Parameters.AddWithValue("@GorevId", 1);
 
-                command.CommandType = System.Data.CommandType.StoredProcedure;
+                //command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 var result = Convert.ToInt32(command.ExecuteScalar());
 
@@ -211,13 +244,22 @@ namespace KafeYonetim.Data
         {
             using (var connection = CreateConnection())
             {
-                var command = new SqlCommand("BulasikciEkle", connection);
+                //var command = new SqlCommand("BulasikciEkle", connection);
+                var command = new SqlCommand($@"
+                            INSERT INTO Bulasikci(HijyenPuani) VALUES(@hijyenPuan);
+                DECLARE @id int;
+                SET @id = scope_identity();
+                INSERT INTO Calisan(Isim, IseGirisTarihi, MesaideMi, KafeId, Durum, GorevId, GorevTabloId) VALUES(@isim, @IseGirisTarihi, @MesaideMi, @kafeId, @Durum, @GorevId, @id); SELECT scope_identity()", connection);
 
-                command.Parameters.AddWithValue("@hijyenPuan", bulasikci.HijyenPuani);
-                command.Parameters.AddWithValue("@kafeId", bulasikci.Kafe.Id);
+                command.Parameters.AddWithValue("@hijyenPuan", FakeData.NumberData.GetNumber(0, 5));
                 command.Parameters.AddWithValue("@isim", bulasikci.Isim);
+                command.Parameters.AddWithValue("@IseGirisTarihi", bulasikci.IseGirisTarihi);
+                command.Parameters.AddWithValue("@MesaideMi", bulasikci.MesaideMi);
+                command.Parameters.AddWithValue("@KafeId", bulasikci.Kafe.Id);
+                command.Parameters.AddWithValue("@Durum", bulasikci.Durum);
+                command.Parameters.AddWithValue("@GorevId", 3);
 
-                command.CommandType = System.Data.CommandType.StoredProcedure;
+                //command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 var result = Convert.ToInt32(command.ExecuteScalar());
 
@@ -440,7 +482,7 @@ namespace KafeYonetim.Data
                             DECLARE @id int;
                             SET @id= scope_identity();
                             INSERT INTO Calisan (Isim, IseGirisTarihi, MesaideMi, KafeId, Durum, GorevId, GorevTabloId) VALUES (@Isim, @IseGirisTarihi, @MesaideMi, @KafeId, @Durum, @GorevId, @id); SELECT scope_identity()", connection);
-                commandGarson.Parameters.AddWithValue("@bahsis", garson.Bahsis);
+                commandGarson.Parameters.AddWithValue("@bahsis", FakeData.NumberData.GetNumber(5, 100));
                 commandGarson.Parameters.AddWithValue("@Isim", garson.Isim);
                 commandGarson.Parameters.AddWithValue("@IseGirisTarihi", garson.IseGirisTarihi);
                 commandGarson.Parameters.AddWithValue("@MesaideMi", garson.MesaideMi);
