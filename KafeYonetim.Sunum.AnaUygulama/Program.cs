@@ -48,6 +48,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 Console.WriteLine("10. Bulaşıkçı Ekle");
                 Console.WriteLine("11. Çalışanları Listele");
                 Console.WriteLine("12. Çalışan Sayısını Getir");
+                Console.WriteLine("13. Garsonlar");
                 Console.WriteLine();
                 Console.Write("Bir seçim yapınız (çıkmak için H harfine basınız): ");
                 var secim = Console.ReadLine();
@@ -66,12 +67,23 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "10": BulasikciEkle(); break;
                     case "11": CalisanListesiniGetir(); break;
                     case "12": CalisanSayisiniGetir(); break;
+                    case "13": GarsonlariListele(); break;
                     case "h": return;
                     default:
                         break;
                 }
 
             } while (true);
+        }
+
+        private static void GarsonlariListele()
+        {
+            Console.Clear();
+            foreach (var garson in DataManager.GarsonlariGetir())
+            {
+                Console.WriteLine($"Adı: {garson.Isim}, İşe Giriş tarihi: {garson.IseGirisTarihi}, Toplam Bahşiş: {garson.Bahsis}");
+            }
+            Console.ReadLine();
         }
 
         private static void CalisanSayisiniGetir()

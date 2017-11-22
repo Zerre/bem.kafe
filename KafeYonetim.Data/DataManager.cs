@@ -94,6 +94,24 @@ namespace KafeYonetim.Data
             }
         }
 
+        public static List<Garson> GarsonlariGetir()
+        {
+            List<Garson> garsonlar = new List<Garson>();
+            using (SqlConnection connection = CreateConnection())
+            {
+                SqlCommand command = new SqlCommand("Select C.Isim, C.IseGirisTarihi, G.Bahsis from Calisan C join Garson G on C.GorevTabloId = G.Id where GorevId = 2", connection);
+                using (SqlDataReader result = command.ExecuteReader())
+                {
+                    while (result.Read())
+                    {
+                        garsonlar.Add(new Garson(result["Isim"].ToString(), (DateTime)result["IseGirisTarihi"], AktifKafeyiGetir()));
+                    }
+                }
+
+            }
+            return garsonlar;
+        }
+
         public static object CalisanSayisiniGetir()
         {
             using (var connection = CreateConnection())
