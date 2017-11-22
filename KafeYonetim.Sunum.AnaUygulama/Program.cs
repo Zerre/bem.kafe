@@ -48,7 +48,6 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 Console.WriteLine("10. Bulaşıkçı Ekle");
                 Console.WriteLine("11. Çalışanları Listele");
                 Console.WriteLine("12. Çalışan Sayısını Getir");
-                Console.WriteLine("13. Garsonlar");
                 Console.WriteLine();
                 Console.Write("Bir seçim yapınız (çıkmak için H harfine basınız): ");
                 var secim = Console.ReadLine();
@@ -67,7 +66,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "10": BulasikciEkle(); break;
                     case "11": CalisanListesiniGetir(); break;
                     case "12": CalisanSayisiniGetir(); break;
-                    case "13": GarsonlariListele(); break;
+                    case "13": GarsonListele(); break;
                     case "h": return;
                     default:
                         break;
@@ -76,13 +75,23 @@ namespace KafeYonetim.Sunum.AnaUygulama
             } while (true);
         }
 
-        private static void GarsonlariListele()
+        private static void GarsonListele()
         {
             Console.Clear();
-            foreach (var garson in DataManager.GarsonlariGetir())
+
+            Console.Write("İsim".PadRight(30));
+            Console.Write("İşe Giriş Tarihi".PadRight(30));
+            Console.Write("Bahşiş".PadRight(5));
+
+            Console.WriteLine("".PadRight(60, '='));
+
+            List<Garson> garsonlar = DataManager.GarsonListele();
+
+            foreach (var garson in garsonlar)
             {
-                Console.WriteLine($"Adı: {garson.Isim}, İşe Giriş tarihi: {garson.IseGirisTarihi}, Toplam Bahşiş: {garson.Bahsis}");
+                Console.WriteLine($"{garson.Isim.PadRight(30)}{garson.IseGirisTarihi.ToString("dd.MM.yyyy").PadRight(30)}{garson.Bahsis}");
             }
+
             Console.ReadLine();
         }
 
