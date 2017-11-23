@@ -94,6 +94,30 @@ namespace KafeYonetim.Data
             }
         }
 
+        public static double GarsonBahsisToplami()
+        {
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand("SELECT SUM(Bahsis) FROM Garson", connection);
+
+                double result = (double)command.ExecuteScalar();
+
+                return result;
+            }
+        }
+
+        public static int GarsonSayisi()
+        {
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand("SELECT COUNT(*) FROM Garson", connection);
+
+                int result = (int)command.ExecuteScalar();
+
+                return result;
+            }
+        }
+
         public static List<Calisan> CalisanlariSayfaliGetir(int sayfa)
         {
             List<Calisan> calisanlar = new List<Calisan>();
@@ -188,12 +212,30 @@ namespace KafeYonetim.Data
             }
         }
 
-        public static List<Calisan> CalisanListesiniGetir()
+        public static int CalisanSayfaSayisiniGetir(decimal sayfadakiKayitSayisi = 20)
         {
             using (var connection = CreateConnection())
             {
-                var command = new SqlCommand("CalisanListesiniGetir", connection);
+                var command = new SqlCommand("CalisanSayfaSayisiHesapla", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@SayfadakiOgeSayisi", sayfadakiKayitSayisi);
+
+                int sayfaSayisi = Convert.ToInt32(command.ExecuteScalar());
+
+                return sayfaSayisi;
+            }
+        }
+
+        public static List<Calisan> CalisanListesiniGetir(int sayfaNumarasi =1 , int sayfadakiKayitSayisi = 20)
+        {
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand("SayfaSayisinaGoreCalisanGetir", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@sayfaNumarasi", sayfaNumarasi);
+                command.Parameters.AddWithValue("@sayfadakiKayitSayisi", sayfadakiKayitSayisi);
 
                 using (var reader = command.ExecuteReader())
                 {
