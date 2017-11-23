@@ -8,7 +8,7 @@ namespace KafeYonetim.Data
 
     public class DataManager
     {
-        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=KafeYonetim;Integrated Security=True";
+        private static string connStr = "Data Source=SamininMakinesi;Initial Catalog=KafeYonetim;Integrated Security=True";
 
         private static SqlConnection CreateConnection()
         {
@@ -111,30 +111,6 @@ namespace KafeYonetim.Data
                 }
             }
             return calisanlar;
-        }
-
-        public static double GarsonBahsisToplami()
-        {
-            using (var connection = CreateConnection())
-            {
-                var command = new SqlCommand("SELECT SUM(Bahsis) FROM Garson", connection);
-
-                double result = (double)command.ExecuteScalar();
-
-                return result;
-            }
-        }
-
-        public static int GarsonSayisi()
-        {
-            using (var connection = CreateConnection())
-            {
-                var command = new SqlCommand("SELECT COUNT(*) FROM Garson", connection);
-
-                int result = (int)command.ExecuteScalar();
-
-                return result;
-            }
         }
 
         public static List<Calisan> CalisanlariSayfaliGetir(int sayfa)

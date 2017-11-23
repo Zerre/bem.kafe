@@ -56,7 +56,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "15": CalisanlarinSayfaliListesi(); break;
                     case "16": CalisanIsimAra(); break;
                     //case "16": CalisanEkle(); break;
-                    case "16": CalisanFiltrele(); break;
+                    case "17": CalisanFiltrele(); break;
                     case "h": return;
                     default:
                         break;
@@ -73,7 +73,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
             Console.ReadLine();
         }
 
-        private static void CalisanlariSayfaliListesi()
+        private static void CalisanlarinSayfaliListesi()
         {
             double toplamSayfa = Math.Ceiling(Convert.ToSingle(DataManager.CalisanSayisiniGetir()) / 20);
             Console.WriteLine($"Toplam {toplamSayfa} sayfa var");
