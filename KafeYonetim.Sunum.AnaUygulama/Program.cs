@@ -32,6 +32,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 Console.WriteLine("14. Garson Bahşişleri");
                 Console.WriteLine("15. Çalışanları Sayfala");
                 Console.WriteLine("16. Çalışan Ara");
+                Console.WriteLine("17. Çalışan Filtrele");
                 Console.WriteLine();
                 Console.Write("Bir seçim yapınız (çıkmak için H harfine basınız): ");
                 var secim = Console.ReadLine();
@@ -52,13 +53,15 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "12": CalisanSayisiniGetir(); break;
                     case "13": GarsonListele(); break;
                     case "14": ToplamGarsonBahsisleri(); break;
-                    case "15": CalisanlariSayfaliListesi(); break;
+                    case "15": CalisanlarinSayfaliListesi(); break;
                     case "16": CalisanIsimAra(); break;
                     //case "16": CalisanEkle(); break;
+                    case "16": CalisanFiltrele(); break;
                     case "h": return;
                     default:
                         break;
                 }
+                 
 
             } while (true);
         }
@@ -151,6 +154,38 @@ namespace KafeYonetim.Sunum.AnaUygulama
             Console.Clear();
             Console.WriteLine(DataManager.ToplamBahsisler());
             Console.ReadLine();
+        }
+
+        private static void CalisanFiltrele()
+        {
+            while (true)
+            {
+                Console.Clear();
+
+                Console.Write("Bir metin giriniz: ");
+                string metin = Console.ReadLine();
+                string cikisKontrolu = "";
+                int sayfa = 1;
+                while (true)
+                {
+                    List<Calisan> calisanlar = DataManager.CalisanListesiniIsmeGoreFiltrele(metin, sayfa);
+
+                    CalisanListesiniEkranaYazdir(calisanlar);
+                    Console.WriteLine("Sayfa numarasini belirtin, başka isimle arama yapmak için c/C harfine basın. Üst menü için h/H harfini yazın..");
+
+                    cikisKontrolu = Console.ReadLine();
+                    if (cikisKontrolu.ToLower() == "h")
+                    {
+                        return;
+                    }
+                    else if (cikisKontrolu.ToLower() == "c")
+                    {
+                        break;
+                    }
+
+                    int.TryParse(cikisKontrolu, out sayfa);
+                } 
+            }
         }
 
         private static void GarsonListele()
