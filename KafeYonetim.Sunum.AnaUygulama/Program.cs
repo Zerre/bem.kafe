@@ -31,6 +31,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 Console.WriteLine("13. Garson Listele");
                 Console.WriteLine("14. Garson Bahşişleri");
                 Console.WriteLine("15. Çalışanları Sayfala");
+                Console.WriteLine("16. Çalışan Ara");
                 Console.WriteLine();
                 Console.Write("Bir seçim yapınız (çıkmak için H harfine basınız): ");
                 var secim = Console.ReadLine();
@@ -52,6 +53,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "13": GarsonListele(); break;
                     case "14": ToplamGarsonBahsisleri(); break;
                     case "15": CalisanlariSayfaliListesi(); break;
+                    case "16": CalisanIsimAra(); break;
                     //case "16": CalisanEkle(); break;
                     case "h": return;
                     default:
@@ -59,6 +61,13 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 }
 
             } while (true);
+        }
+
+        private static void CalisanIsimAra()
+        {
+            Console.Clear();
+            CalisanListesiniEkranaYazdir(DataManager.CalisanAra(Console.ReadLine()));
+            Console.ReadLine();
         }
 
         private static void CalisanlariSayfaliListesi()

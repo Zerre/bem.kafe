@@ -94,6 +94,25 @@ namespace KafeYonetim.Data
             }
         }
 
+        public static List<Calisan> CalisanAra(string isim)
+        {
+            List<Calisan> calisanlar = new List<Calisan>();
+            using (SqlConnection connection = CreateConnection())
+            {
+                SqlCommand command = new SqlCommand("select * from Calisan where Isim like @isim+'%'", connection);
+                command.Parameters.AddWithValue("@isim", isim);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        calisanlar.Add(new Calisan(reader["Isim"].ToString(), (DateTime)reader["IseGirisTarihi"], AktifKafeyiGetir()));
+                    }
+                }
+            }
+            return calisanlar;
+        }
+
         public static double GarsonBahsisToplami()
         {
             using (var connection = CreateConnection())
@@ -122,8 +141,8 @@ namespace KafeYonetim.Data
         {
             List<Calisan> calisanlar = new List<Calisan>();
             using (SqlConnection connection = CreateConnection())
-            {                
-                float toplamSayfaSayisi = Convert.ToSingle(CalisanSayisiniGetir())/20;
+            {
+                float toplamSayfaSayisi = Convert.ToSingle(CalisanSayisiniGetir()) / 20;
                 SqlCommand commandCalisanlar = new SqlCommand("SELECT * FROM Calisan C Join CalisanGorev G on C.GorevID = G.Id ORDER BY C.Id ASC OFFSET @baslangic ROWS FETCH FIRST 20 ROWS ONLY", connection);
                 if (sayfa <= Math.Ceiling(toplamSayfaSayisi))
                 {
@@ -227,7 +246,7 @@ namespace KafeYonetim.Data
             }
         }
 
-        public static List<Calisan> CalisanListesiniGetir(int sayfaNumarasi =1 , int sayfadakiKayitSayisi = 20)
+        public static List<Calisan> CalisanListesiniGetir(int sayfaNumarasi = 1, int sayfadakiKayitSayisi = 20)
         {
             using (var connection = CreateConnection())
             {
