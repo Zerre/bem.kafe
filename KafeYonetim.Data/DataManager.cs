@@ -98,8 +98,8 @@ namespace KafeYonetim.Data
         {
             List<Calisan> calisanlar = new List<Calisan>();
             using (SqlConnection connection = CreateConnection())
-            {                
-                float toplamSayfaSayisi = Convert.ToSingle(CalisanSayisiniGetir())/20;
+            {
+                float toplamSayfaSayisi = Convert.ToSingle(CalisanSayisiniGetir()) / 20;
                 SqlCommand commandCalisanlar = new SqlCommand("SELECT * FROM Calisan C Join Gorev G on C.GorevID = G.Id ORDER BY C.Id ASC OFFSET @baslangic ROWS FETCH FIRST 20 ROWS ONLY", connection);
                 if (sayfa <= Math.Ceiling(toplamSayfaSayisi))
                 {
@@ -118,13 +118,14 @@ namespace KafeYonetim.Data
             return calisanlar;
         }
 
-        public static List<Calisan> CalisanListesiniIsmeGoreFiltrele(string metin)
+        public static List<Calisan> CalisanListesiniIsmeGoreFiltrele(string metin, int baslangic = 1)
         {
             using (var connection = CreateConnection())
             {
-                var command = new SqlCommand("SELECT Calisan.*, CalisanGorev.GorevAdi FROM Calisan INNER JOIN CalisanGorev ON Calisan.GorevId = CalisanGorev.Id WHERE Calisan.Isim LIKE '%'+@metin+'%'", connection);
+                var command = new SqlCommand("SELECT Calisan.*, CalisanGorev.GorevAdi FROM Calisan INNER JOIN CalisanGorev ON Calisan.GorevId = CalisanGorev.Id WHERE Calisan.Isim LIKE '%'+@metin+'%' order by Calisan.Id OFFSET @baslangic rows fetch next 3 rows only", connection);
 
                 command.Parameters.AddWithValue("@metin", metin);
+                command.Parameters.AddWithValue("@baslangic", (baslangic - 1) * 3);
 
                 using (var reader = command.ExecuteReader())
                 {
@@ -253,7 +254,7 @@ namespace KafeYonetim.Data
             }
         }
 
-        public static List<Calisan> CalisanListesiniGetir(int sayfaNumarasi =1 , int sayfadakiKayitSayisi = 20)
+        public static List<Calisan> CalisanListesiniGetir(int sayfaNumarasi = 1, int sayfadakiKayitSayisi = 20)
         {
             using (var connection = CreateConnection())
             {

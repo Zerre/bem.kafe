@@ -52,7 +52,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "12": CalisanSayisiniGetir(); break;
                     case "13": GarsonListele(); break;
                     case "14": ToplamGarsonBahsisleri(); break;
-                    case "15": CalisanlariSayfaliListesi(); break;
+                    case "15": CalisanlarinSayfaliListesi(); break;
                     //case "15": CalisanEkle(); break;
                     case "16": CalisanFiltrele(); break;
                     case "h": return;
@@ -63,7 +63,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
             } while (true);
         }
 
-        private static void CalisanlariSayfaliListesi()
+        private static void CalisanlarinSayfaliListesi()
         {
             double toplamSayfa = Math.Ceiling(Convert.ToSingle(DataManager.CalisanSayisiniGetir()) / 20);
             Console.WriteLine($"Toplam {toplamSayfa} sayfa var");
@@ -148,16 +148,34 @@ namespace KafeYonetim.Sunum.AnaUygulama
 
         private static void CalisanFiltrele()
         {
-            Console.Clear();
+            while (true)
+            {
+                Console.Clear();
 
-            Console.Write("Bir metin giriniz: ");
-            string metin = Console.ReadLine();
+                Console.Write("Bir metin giriniz: ");
+                string metin = Console.ReadLine();
+                string cikisKontrolu = "";
+                int sayfa = 1;
+                while (true)
+                {
+                    List<Calisan> calisanlar = DataManager.CalisanListesiniIsmeGoreFiltrele(metin, sayfa);
 
-            List<Calisan> calisanlar = DataManager.CalisanListesiniIsmeGoreFiltrele(metin);
+                    CalisanListesiniEkranaYazdir(calisanlar);
+                    Console.WriteLine("Sayfa numarasini belirtin, başka isimle arama yapmak için c/C harfine basın. Üst menü için h/H harfini yazın..");
 
-            CalisanListesiniEkranaYazdir(calisanlar);
+                    cikisKontrolu = Console.ReadLine();
+                    if (cikisKontrolu.ToLower() == "h")
+                    {
+                        return;
+                    }
+                    else if (cikisKontrolu.ToLower() == "c")
+                    {
+                        break;
+                    }
 
-            Console.Read();
+                    int.TryParse(cikisKontrolu, out sayfa);
+                } 
+            }
         }
 
         private static void GarsonListele()
