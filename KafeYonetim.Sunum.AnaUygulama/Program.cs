@@ -14,7 +14,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
         {
             do
             {
-                //Console.Clear();
+                Console.Clear();
 
                 Console.WriteLine("1. Ürün Listesini Getir");
                 Console.WriteLine("2. Eşik Değerden Yüksek Fiyatlı Ürünlerin Listesini Getir");
@@ -94,7 +94,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     {
                         return;
                     }
-                    
+
                 }
                 Console.ReadLine();
             }
@@ -202,44 +202,61 @@ namespace KafeYonetim.Sunum.AnaUygulama
             List<Calisan> liste = DataManager.CalisanListesiniGetir();
             int toplamSayfaSayisi = DataManager.CalisanSayfaSayisiniGetir();
             int sayfaNumarasi = 1;
-
+            bool girisGecerliMi = true;
             while (true)
             {
-                Console.Clear();
-
-                Console.Write("Id".PadRight(5));
-                Console.Write("İsim".PadRight(30));
-                Console.Write("İşe Giriş Tarihi".PadRight(20));
-                Console.WriteLine("Görev");
-                Console.WriteLine("".PadRight(60, '='));
-
-                foreach (var calisan in liste)
+                if (girisGecerliMi)
                 {
-                    Console.WriteLine($"{calisan.Id.ToString().PadRight(5)}{calisan.Isim.PadRight(30)}{calisan.IseGirisTarihi.ToString("yyyy.MMMM.dddd").PadRight(20)}{calisan.Gorev.GorevAdi}");
-                }
+                    Console.Clear();
 
-                Console.WriteLine($"Sayfa: {sayfaNumarasi}/{toplamSayfaSayisi}");
+                    Console.Write("Id".PadRight(5));
+                    Console.Write("İsim".PadRight(20));
+                    Console.Write("İşe Giriş Tarihi".PadRight(25));
+                    Console.WriteLine("Görev");
+                    Console.WriteLine("".PadRight(60, '='));
+
+
+                    foreach (var calisan in liste)
+                    {
+                        Console.WriteLine($"{calisan.Id.ToString().PadRight(5)}{calisan.Isim.PadRight(20)}{calisan.IseGirisTarihi.ToString("yyyy.MMMM.dddd").PadRight(25)}{calisan.Gorev.GorevAdi}");
+                    }
+
+                    if (sayfaNumarasi <= toplamSayfaSayisi)
+                    {
+                        Console.WriteLine($"Sayfa: {sayfaNumarasi}/{toplamSayfaSayisi}");
+                    }
+                }
                 Console.Write("Sayfa numarası giriniz (çıkmak için h/H harfine basınız): ");
 
                 var girdi = Console.ReadLine().ToUpper();
 
-                if(girdi == "H")
+                if (girdi == "H")
                 {
                     break;
                 }
-
-                sayfaNumarasi = Convert.ToInt32(girdi);
-
-                if(sayfaNumarasi < 1 || sayfaNumarasi > toplamSayfaSayisi)
+                else
                 {
-                    Console.WriteLine("Lütfen Geçerli bir sayfa numarası girin.");
-                    continue;
+                    try
+                    {
+                        sayfaNumarasi = Convert.ToInt32(girdi);
+                        girisGecerliMi = true;
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Geçersiz giriş..");
+                        girisGecerliMi = false;
+                    }
+                    if (sayfaNumarasi < 1 || sayfaNumarasi > toplamSayfaSayisi)
+                    {
+                        Console.WriteLine("Lütfen Geçerli bir sayfa numarası girin.");
+                        girisGecerliMi = false;                        
+                    }
                 }
 
                 liste = DataManager.CalisanListesiniGetir(sayfaNumarasi);
 
             }
-            
+
         }
 
         private static void AsciEkle()
