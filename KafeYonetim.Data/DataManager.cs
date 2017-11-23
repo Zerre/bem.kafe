@@ -143,7 +143,7 @@ namespace KafeYonetim.Data
             using (SqlConnection connection = CreateConnection())
             {
                 float toplamSayfaSayisi = Convert.ToSingle(CalisanSayisiniGetir()) / 20;
-                SqlCommand commandCalisanlar = new SqlCommand("SELECT * FROM Calisan C Join CalisanGorev G on C.GorevID = G.Id ORDER BY C.Id ASC OFFSET @baslangic ROWS FETCH FIRST 20 ROWS ONLY", connection);
+                SqlCommand commandCalisanlar = new SqlCommand("SELECT * FROM Calisan C Join Gorev G on C.GorevID = G.Id ORDER BY C.Id ASC OFFSET @baslangic ROWS FETCH FIRST 20 ROWS ONLY", connection);
                 if (sayfa <= Math.Ceiling(toplamSayfaSayisi))
                 {
                     commandCalisanlar.Parameters.AddWithValue("@baslangic", (sayfa - 1) * 20);
@@ -159,6 +159,57 @@ namespace KafeYonetim.Data
                 }
             }
             return calisanlar;
+        }
+
+        public static List<Calisan> CalisanListesiniIsmeGoreFiltrele(string metin, int baslangic = 1)
+        {
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand("SELECT Calisan.*, CalisanGorev.GorevAdi FROM Calisan INNER JOIN CalisanGorev ON Calisan.GorevId = CalisanGorev.Id WHERE Calisan.Isim LIKE '%'+@metin+'%' order by Calisan.Id OFFSET @baslangic rows fetch next 3 rows only", connection);
+
+                command.Parameters.AddWithValue("@metin", metin);
+                command.Parameters.AddWithValue("@baslangic", (baslangic - 1) * 3);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    var list = new List<Calisan>();
+
+                    while (reader.Read())
+                    {
+                        var calisan = new Calisan(reader["Isim"].ToString(), (DateTime)reader["IseGirisTarihi"], DataManager.AktifKafeyiGetir());
+
+                        calisan.Gorev.GorevAdi = reader["GorevAdi"].ToString();
+
+                        list.Add(calisan);
+                    }
+
+                    return list;
+                }
+            }
+        }
+
+        public static double GarsonBahsisToplami()
+        {
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand("SELECT SUM(Bahsis) FROM Garson", connection);
+
+                double result = (double)command.ExecuteScalar();
+
+                return result;
+            }
+        }
+
+        public static int GarsonSayisi()
+        {
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand("SELECT COUNT(*) FROM Garson", connection);
+
+                int result = (int)command.ExecuteScalar();
+
+                return result;
+            }
         }
 
         public static string ToplamBahsisler()
