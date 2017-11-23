@@ -198,65 +198,77 @@ namespace KafeYonetim.Sunum.AnaUygulama
 
         private static void CalisanListesiniGetir()
         {
-
             List<Calisan> liste = DataManager.CalisanListesiniGetir();
             int toplamSayfaSayisi = DataManager.CalisanSayfaSayisiniGetir();
             int sayfaNumarasi = 1;
-            bool girisGecerliMi = true;
+
             while (true)
             {
-                if (girisGecerliMi)
+                CalisanListesiniEkranaYazdir(liste);
+
+                Console.WriteLine($"Sayfa: {sayfaNumarasi}/{toplamSayfaSayisi}");
+
+                sayfaNumarasi = SayfaNumarasiniOku(toplamSayfaSayisi);
+
+                if (sayfaNumarasi == -5484)
                 {
-                    Console.Clear();
-
-                    Console.Write("Id".PadRight(5));
-                    Console.Write("İsim".PadRight(20));
-                    Console.Write("İşe Giriş Tarihi".PadRight(25));
-                    Console.WriteLine("Görev");
-                    Console.WriteLine("".PadRight(60, '='));
-
-
-                    foreach (var calisan in liste)
-                    {
-                        Console.WriteLine($"{calisan.Id.ToString().PadRight(5)}{calisan.Isim.PadRight(20)}{calisan.IseGirisTarihi.ToString("yyyy.MMMM.dddd").PadRight(25)}{calisan.Gorev.GorevAdi}");
-                    }
-
-                    if (sayfaNumarasi <= toplamSayfaSayisi)
-                    {
-                        Console.WriteLine($"Sayfa: {sayfaNumarasi}/{toplamSayfaSayisi}");
-                    }
+                    return;
                 }
-                Console.Write("Sayfa numarası giriniz (çıkmak için h/H harfine basınız): ");
 
+                liste = DataManager.CalisanListesiniGetir(sayfaNumarasi);
+            }
+        }
+
+        private static int SayfaNumarasiniOku(int toplamSayfaSayisi)
+        {
+            do
+            {
+                Console.Write("\bSayfa numarası giriniz (çıkmak için h/H harfine basınız): ");
+                
                 var girdi = Console.ReadLine().ToUpper();
 
                 if (girdi == "H")
                 {
-                    break;
+                    return -5484;
                 }
-                else
+
+                int sayfaNumarasi;
+
+
+
+                if (!int.TryParse(girdi, out sayfaNumarasi))
                 {
-                    try
-                    {
-                        sayfaNumarasi = Convert.ToInt32(girdi);
-                        girisGecerliMi = true;
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("Geçersiz giriş..");
-                        girisGecerliMi = false;
-                    }
-                    if (sayfaNumarasi < 1 || sayfaNumarasi > toplamSayfaSayisi)
-                    {
-                        Console.WriteLine("Lütfen Geçerli bir sayfa numarası girin.");
-                        girisGecerliMi = false;                        
-                    }
+                    Console.WriteLine("Lütfen geçerli bir sayı giriniz. ");
+                    continue;
                 }
 
-                liste = DataManager.CalisanListesiniGetir(sayfaNumarasi);
+                if (sayfaNumarasi < 1 || sayfaNumarasi > toplamSayfaSayisi)
+                {
+                    Console.WriteLine($"Lütfen 1 - {toplamSayfaSayisi} arasında bir sayıgirin.");
+                    continue;
 
+                }
+
+                return sayfaNumarasi;
+            } while (true);
+
+
+        }
+
+        private static void CalisanListesiniEkranaYazdir(List<Calisan> liste)
+        {
+            Console.Clear();
+
+            Console.Write("Id".PadRight(5));
+            Console.Write("İsim".PadRight(30));
+            Console.Write("İşe Giriş Tarihi".PadRight(20));
+            Console.WriteLine("Görev");
+            Console.WriteLine("".PadRight(60, '='));
+
+            foreach (var calisan in liste)
+            {
+                Console.WriteLine($"{calisan.Id.ToString().PadRight(5)}{calisan.Isim.PadRight(30)}{calisan.IseGirisTarihi.ToString("yyyy.MMMM.dddd").PadRight(20)}{calisan.Gorev.GorevAdi}");
             }
-
         }
 
         private static void AsciEkle()
