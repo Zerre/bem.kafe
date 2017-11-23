@@ -34,7 +34,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
 
             do
             {
-                Console.Clear();
+                //Console.Clear();
 
                 Console.WriteLine("1. Ürün Listesini Getir");
                 Console.WriteLine("2. Eşik Değerden Yüksek Fiyatlı Ürünlerin Listesini Getir");
@@ -72,7 +72,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "13": GarsonListele(); break;
                     case "14": ToplamGarsonBahsisleri(); break;
                     case "15": CalisanlariSayfaliListesi(); break;
-                    //case "15": CalisanEkle(); break;
+                    //case "16": CalisanEkle(); break;
                     case "h": return;
                     default:
                         break;
@@ -109,7 +109,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Sayfalar arasında dolaşmak için Enter'a basın ve sayfasayısnı sayı belirtin. Üst menu için C 'ye basın.");
+                    Console.WriteLine("Sayfalar arasında dolaşmak için Enter'a basın ve sayfa sayısnı sayı belirtin. Üst menu için C 'ye basın.");
                     if (Console.ReadLine().ToLower() == "c")
                     {
                         return;

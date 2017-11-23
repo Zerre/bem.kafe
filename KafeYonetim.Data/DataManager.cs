@@ -8,7 +8,7 @@ namespace KafeYonetim.Data
 
     public class DataManager
     {
-        private static string connStr = "Data Source=SamininMakinesi;Initial Catalog=KafeYonetim;Integrated Security=True";
+        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=KafeYonetim;Integrated Security=True";
 
         private static SqlConnection CreateConnection()
         {
@@ -100,7 +100,7 @@ namespace KafeYonetim.Data
             using (SqlConnection connection = CreateConnection())
             {                
                 float toplamSayfaSayisi = Convert.ToSingle(CalisanSayisiniGetir())/20;
-                SqlCommand commandCalisanlar = new SqlCommand("SELECT * FROM Calisan C Join Gorev G on C.GorevID = G.Id ORDER BY C.Id ASC OFFSET @baslangic ROWS FETCH FIRST 20 ROWS ONLY", connection);
+                SqlCommand commandCalisanlar = new SqlCommand("SELECT * FROM Calisan C Join CalisanGorev G on C.GorevID = G.Id ORDER BY C.Id ASC OFFSET @baslangic ROWS FETCH FIRST 20 ROWS ONLY", connection);
                 if (sayfa <= Math.Ceiling(toplamSayfaSayisi))
                 {
                     commandCalisanlar.Parameters.AddWithValue("@baslangic", (sayfa - 1) * 20);
