@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafeYonetim.Data", "KafeYon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafeYonetim.Sunum.AnaUygulama", "KafeYonetim.Sunum.AnaUygulama\KafeYonetim.Sunum.AnaUygulama.csproj", "{F25FC74C-7CDE-40AC-B456-8BF8A1099EF4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{31A77F07-3678-40E0-B1E4-5BD6B6CC0509}"
+	ProjectSection(SolutionItems) = preProject
+		CalisanSayfaSayisiHesapla.sql = CalisanSayfaSayisiHesapla.sql
+		SayfaSayisinaGoreCalisanGetir.sql = SayfaSayisinaGoreCalisanGetir.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
